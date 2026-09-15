@@ -1,0 +1,33 @@
+#include <Arduino.h>
+
+const int potPin = 33; 
+
+const float teganganReferensi = 3.3;
+const float hambatanTotal = 10000.0; 
+
+void setup() {
+  Serial.begin(115200);
+  
+  delay(1000);
+  Serial.println("--- Mulai Pembacaan Sensor Potensiometer ---");
+}
+
+void loop() {
+  int rawADC = analogRead(potPin);
+
+  float tegangan = (rawADC / 4095.0) * teganganReferensi;
+  float hambatan = (rawADC / 4095.0) * hambatanTotal;
+
+  Serial.print("Raw ADC: ");
+  Serial.print(rawADC);
+  
+  Serial.print("   |   Tegangan: ");
+  Serial.print(tegangan);
+  Serial.print(" V");
+  
+  Serial.print("   |   Hambatan: ");
+  Serial.print(hambatan);
+  Serial.println(" Ohm");
+
+  delay(1000);
+}
