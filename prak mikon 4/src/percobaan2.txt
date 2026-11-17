@@ -1,0 +1,49 @@
+#include <Wire.h>
+#include <Adafruit_INA219.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+
+Adafruit_INA219 ina219;
+
+Adafruit_SSD1306 display(128, 64, &Wire1, -1);
+
+void setup() {
+  Serial.begin(115200);
+  
+  Wire.begin(15, 16); 
+  
+  Wire1.begin(8, 9); 
+  
+  ina219.begin();
+  
+  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
+  
+  display.clearDisplay();
+  display.setTextColor(WHITE);
+}
+
+void loop() {
+  float arus_mA = ina219.getCurrent_mA();
+  float tegangan_V = ina219.getBusVoltage_V();
+  float daya_mW = ina219.getPower_mW();
+
+  Serial.print("Tegangan: "); Serial.print(tegangan_V); Serial.println(" V");
+  Serial.print("Arus: "); Serial.print(arus_mA); Serial.println(" mA");
+  Serial.print("Daya: "); Serial.print(daya_mW); Serial.println(" mW");
+  Serial.println("-----------------------");
+  
+  display.clearDisplay();
+  display.setTextSize(1);
+  display.setCursor(0, 0);
+  
+  display.println("Monitor Daya (INA219)");
+  display.println("");
+  
+  display.print("V : "); display.print(tegangan_V); display.println(" V");
+  display.print("I : "); display.print(arus_mA); display.println(" mA");
+  display.print("P : "); display.print(daya_mW); display.println(" mW");
+  
+  display.display();
+  
+  delay(1000);
+}
